@@ -1,0 +1,89 @@
+Ubuntu 16.04
+
+Username: ubuntu
+Password: ubuntu
+
+1. Install docker
+   https://docs.docker.com/engine/installation/linux/ubuntulinux/
+
+2. Create a Docker group
+   sudo usermod -aG docker ubuntu
+
+3. install ssh server
+   sudo apt-get install openssh-server
+   sudo vi /etc/ssh/sshd_config
+   uncomment "PasswordAuthentication yes"
+   sudo systemctl restart ssh
+
+4. install Jenkins
+
+   sudo apt-get install wget
+   wget https://pkg.jenkins.io/debian/binary/jenkins_2.60_all.deb
+   sudo dkpg -i jenkins_2.60_all.deb
+
+   sudo passwd jenkins
+   jenkins
+   jenkins
+
+   sudo gpasswd -a jenkins docker
+
+5. Configure Jenkins user
+   enter in browser: http://localhost:8080
+   enter password from /var/log/jenkins
+   set jenkins username/password
+   user: 'jenkins'
+   password: 'jenkins'
+
+6. Disable docker host   
+   systemctl disable docker.service
+
+7. install and configure JDK 8
+   sudo apt-get install software-properties-common
+   sudo add-apt-repository ppa:webupd8team/java
+   sudo apt-get update
+   sudo apt-get install oracle-java8-installer
+   sudo apt-get install oracle-java8-set-default
+
+8. Configure ssh key to the stagging/production
+   su jenkins
+   ssh-keygen
+   ssh-copy-id ubuntu@<stagging_ip>
+   ssh-copy-id ubuntu@<production_ip>
+
+9. Install curl
+   sudo apt-get install curl
+
+10. Add insecure registry
+   sudo vi /lib/systemd/system/docker.service
+   add "--insecure-registry=0.0.0.0/0 -api-enable-cors" to the end of the line ExecStart
+
+11. Run Docker Registry
+   sudo docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+12. Disable ssh StrictHostKeyChecking
+   sudo vi /etc/ssh/ssh_config
+   add "StrictHostKeyChecking no"
+
+13. Install nano
+   sudo apt-get install nano
+
+14. Configure two network adapters (NAT and internal network)
+   sudo vi /etc/network/interfaces
+
+   auto enp0s3
+   iface enp0s3 inet static
+     address 10.0.2.15
+     netmask 255.255.255.0
+     network 10.0.2.2
+     broadcast 10.0.2.255
+     gateway 10.0.2.2
+     dns-namesevers 10.0.2.3 8.8.8.8
+
+   auto enp0s8
+   iface enp0s8 inet static
+     address 192.168.1.2
+     netmask 255.255.255.0
+     network 192.168.1.1
+     broadcast 192.168.1.255
+
+15. 
