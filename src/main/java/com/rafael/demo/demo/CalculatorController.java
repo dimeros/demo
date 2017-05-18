@@ -18,6 +18,5 @@ public class CalculatorController {
         Integer result = a + b;
         return result;
 
-
     }
 }
