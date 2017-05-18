@@ -20,4 +20,17 @@ public class CalculatorControllerTest {
         // then
         assertEquals(3, result);
     }
+
+    @Test
+    public void multiplyTwoElements() {
+        // given
+        int a = 1;
+        int b = 2;
+
+        // when
+        int result = calculator.multiply(a, b);
+
+        // then
+        assertEquals(2, result);
+    }
 }
