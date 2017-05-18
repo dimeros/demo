@@ -20,7 +20,8 @@ public class CalculatorController {
 
     }
 
+    @RequestMapping(value = "/multiply", method = RequestMethod.GET)
     public int multiply(int a, int b) {
-        return 0;
+        return a*b;
     }
 }
