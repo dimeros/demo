@@ -1,0 +1,5 @@
+----ksekino docker pairnontas to apo to pull twn dockers
+docker run -p 8888:8080 tomcat
+----
+
+docker run -d --name my-couchdb couchdb

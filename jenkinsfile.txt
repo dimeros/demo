@@ -21,6 +21,12 @@ pipeline {
                 sh './mvnw test' 
             }
         }
-       
+        stage('Docker') {
+            steps {
+                sh './mvnw package'
+                sh 'docker build -t calculator demo/.'
+            }
+        }
+
     }
 }
